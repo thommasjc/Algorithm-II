@@ -1,0 +1,144 @@
+/******************************************************************************
+
+                            Padaria do Seu Pedro
+                            Descrição do sistema
+Seu Pedro é dono de uma padaria e quer fazer um sistema para controlar seu estoque.
+Para cada produto da padaria deve vem ser armazenados 
+                                -Código
+                                -Nome
+                                -Quantidade (por Kg, no formato float)
+                                -Preço por Kg
+O sistema deve prever duas situações:
+                                -Venda de produtos
+Neste caso deve ser reduzida a quantidade em estoque do produto vendido
+                                -Fabricação de produtos
+Neste caso deve ser aumentada a quantidade em estoque do produto produzido e
+o preço por Kg deve ser atualizado
+
+Considere que podem existir até 5 produtos diferentes na padaria do Seu Manoel.
+Atividades a serem desenvolvidas
+
+· 1ª etapa
+Criar a estrutura de dados para armazenar os dados
+Criar um vetor com capacidade para armazenar a quantidade de itens da padaria
+Fazer um menu com as opções de cadastrar produto, listar produtos, fazer venda,
+alterar estoque (quantidade).
+
+*******************************************************************************/
+#include <stdio.h>
+#include <stdlib.h>
+#define TOTAL 5
+typedef struct{
+    int id;
+    char nome[100];
+    float quantidade, precoKG;
+}dados;
+dados informacoes[TOTAL];
+int cadastrarProdutos(int x);
+void listarProdutos(int x);
+void realizarVenda();
+void alterarEstoque();
+void menu();
+int controle=0;
+int main(){
+    int i;
+    dados inicializador;
+    inicializador.id=0;
+    inicializador.quantidade=inicializador.precoKG=0;
+    inicializador.nome=="A";
+    for (i=0;i<TOTAL;i++){
+        informacoes[i]=inicializador;
+    }
+    menu();
+}
+void menu(){
+    int opcoes;
+    printf("\nO que deseja fazer?\n\n");
+    printf("Para cadastrar um produto digite \t1\n");
+    printf("Para listar os produtos digite \t\t2\n");
+    printf("Para fazer uma venda digite \t\t3\n");
+    printf("Para alterar o estoque digite \t\t4\n");
+    scanf("%d", &opcoes);
+    if (opcoes==1){
+        controle=cadastrarProdutos(controle);
+        menu();
+    }
+    else if(opcoes==2){
+        listarProdutos(controle);
+    }
+    else if(opcoes==3){
+        realizarVenda();
+    }
+    else if(opcoes==4){
+        alterarEstoque();
+    }
+    else{
+        printf("Voce escolheu uma opcao que nao existe, por favor digite novamente\n");
+        menu();
+    }
+}
+int cadastrarProdutos(int x){
+    static int func;
+    informacoes[func].id=func+1;
+    printf("Digite o nome do produto:\t");
+    scanf("%s", informacoes[func].nome);
+    printf("Digite a quantidade de inicial do produto em KG: \t");
+    scanf("%f", &informacoes[func].quantidade);
+    printf("Digite o preco que quer cobrar por KG: \t");
+    scanf("%f", &informacoes[func].precoKG);
+    func++;
+    return (x+1);
+}
+void listarProdutos(int x){
+    int i=0;
+    for(i=0;i<x;i++){
+        printf("\nID = %d\t", informacoes[i].id);
+        printf("\t||Produto = %s||\t", informacoes[i].nome);
+        printf("\t||Quantidade = %.2f KG||\t", informacoes[i].quantidade);
+        printf("\t||Preco por KG = %.2f R$||\t", informacoes[i].precoKG);
+    }
+    menu();
+}
+void realizarVenda(){
+    int v, resp;
+    float quant;
+    printf("\nDigite o ID do produto que deseja realiza a venda:\t");
+    scanf("%d", &v);
+    printf("\nQual a quantidade em KG que deseja vender?");
+    scanf("%f", &quant);
+    informacoes[v-1].quantidade=informacoes[v-1].quantidade-quant;
+    printf("\nDeseja fazer mais alguma venda? Digite '1'para sim ou '0' para não\t");
+    scanf("%d", &resp);
+    if (resp==1){
+        realizarVenda();
+    }
+    else{
+        menu();
+    }
+}
+void alterarEstoque(){
+    int v, resp, somaSub;
+    float quant;
+    printf("\nDigite '1' se deseja adicionar mais quantidade ou '0' se deseja retirar alguma quantidade: \t");
+    scanf("%d", &somaSub);
+    printf("\nDigite o ID do produto que deseja alterar a quantidade em estoque:\t");
+    scanf("%d", &v);
+    printf("\nQual a quantidade em KG que deseja alterar?\t");
+    scanf("%f", &quant);
+    if(somaSub==1){
+        informacoes[v-1].quantidade=informacoes[v-1].quantidade+quant;
+    }
+    else if(somaSub==0){
+        informacoes[v-1].quantidade=informacoes[v-1].quantidade-quant;
+    }
+    printf("\nDeseja fazer mais alguma alteração de estoque? Digite '1'para sim ou '0' para não\t");
+    scanf("%d", &resp);
+    if (resp==1){
+        alterarEstoque();
+    }
+    else{
+        menu();
+    }
+}
+
+
