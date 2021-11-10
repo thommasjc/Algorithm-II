@@ -1,5 +1,4 @@
 /******************************************************************************
-
                             Padaria do Seu Pedro
                             Descrição do sistema
 Seu Pedro é dono de uma padaria e quer fazer um sistema para controlar seu estoque.
@@ -14,16 +13,13 @@ Neste caso deve ser reduzida a quantidade em estoque do produto vendido
                                 -Fabricação de produtos
 Neste caso deve ser aumentada a quantidade em estoque do produto produzido e
 o preço por Kg deve ser atualizado
-
 Considere que podem existir até 5 produtos diferentes na padaria do Seu Manoel.
 Atividades a serem desenvolvidas
-
 · 1ª etapa
 Criar a estrutura de dados para armazenar os dados
 Criar um vetor com capacidade para armazenar a quantidade de itens da padaria
 Fazer um menu com as opções de cadastrar produto, listar produtos, fazer venda,
 alterar estoque (quantidade).
-
 *******************************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
@@ -38,6 +34,7 @@ int cadastrarProdutos(int x);
 void listarProdutos(int x);
 void realizarVenda();
 void alterarEstoque();
+void alterarPreco();
 void menu();
 int controle=0;
 int main(){
@@ -58,6 +55,7 @@ void menu(){
     printf("Para listar os produtos digite \t\t2\n");
     printf("Para fazer uma venda digite \t\t3\n");
     printf("Para alterar o estoque digite \t\t4\n");
+    printf("Para alterar o preço de venda digite\t5\n");
     scanf("%d", &opcoes);
     if (opcoes==1){
         controle=cadastrarProdutos(controle);
@@ -71,6 +69,9 @@ void menu(){
     }
     else if(opcoes==4){
         alterarEstoque();
+    }
+    else if(opcoes==5){
+        alterarPreco();
     }
     else{
         printf("Voce escolheu uma opcao que nao existe, por favor digite novamente\n");
@@ -97,6 +98,7 @@ void listarProdutos(int x){
         printf("\t||Quantidade = %.2f KG||\t", informacoes[i].quantidade);
         printf("\t||Preco por KG = %.2f R$||\t", informacoes[i].precoKG);
     }
+    printf("\n\n");
     menu();
 }
 void realizarVenda(){
@@ -140,5 +142,27 @@ void alterarEstoque(){
         menu();
     }
 }
-
-
+void alterarPreco(){
+    int x, cont;
+    float novo;
+    printf("\nDigite o id do produto que deseja alterar o preço por KG:\t");
+    scanf("%d", &x);
+    if(x==informacoes[x-1].id){
+        printf("\nVoce escolheu o produto %s, qual é o novo valor?\t", informacoes[x-1].nome);
+        scanf("%f", &novo);
+        informacoes[x-1].precoKG=novo;
+        printf("\nDeseja alterar o preço de mais algum produto?\t");
+        printf("\nDigite '1'para sim ou '0'para não:\t");
+        scanf("%d", &cont);
+        if (cont==1){
+            alterarPreco();
+        }
+        else{
+            menu();
+        }
+    }
+    else{
+        printf("\nO id que voce digitou não existe, tente novamente\n");
+        alterarPreco();
+    }
+}
